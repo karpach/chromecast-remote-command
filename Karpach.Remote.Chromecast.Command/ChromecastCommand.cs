@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Linq;
 using System.Net;
@@ -10,11 +11,11 @@ using ChromecastYoutubeCaster;
 using Karpach.Remote.Commands.Base;
 using Karpach.Remote.Commands.Interfaces;
 using NLog;
-using SampleCommand;
 using SharpCaster.Services;
 
 namespace Karpach.Remote.Chromecast.Command
 {
+    [Export(typeof(IRemoteCommand))]
     public class ChromecastCommand : CommandBase
     {
         public ChromecastCommand():base(null)
