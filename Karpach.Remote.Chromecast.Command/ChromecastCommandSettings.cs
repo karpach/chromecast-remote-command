@@ -1,6 +1,6 @@
 ﻿using Karpach.Remote.Commands.Base;
 
-namespace SampleCommand
+namespace Karpach.Remote.Chromecast.Command
 {
     public class ChromecastCommandSettings : CommandSettingsBase
     {

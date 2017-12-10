@@ -26,7 +26,7 @@ namespace Karpach.Remote.Chromecast.Command
         }
 
         private static readonly Logger Logger = LogManager.GetCurrentClassLogger();
-
+        protected override Type SettingsType => typeof(ChromecastCommandSettings);
         public override string CommandTitle => ConfiguredValue ? ((ChromecastCommandSettings)Settings).CommandName : $"Chromecast Command - {NotConfigured}";
         public override Image TrayIcon => Resources.Icon.ToBitmap();
         public override void RunCommand(params object[] parameters)
@@ -42,7 +42,7 @@ namespace Karpach.Remote.Chromecast.Command
             }
             if (parameters != null && parameters.Length == 1)
             {
-                string parameter = parameters[0].ToString().ToLower();
+                string parameter = parameters[0].ToString();
                 PlayYoutubeVideo(parameter).Wait();
             }
             else
