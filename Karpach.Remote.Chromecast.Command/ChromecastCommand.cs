@@ -4,10 +4,11 @@ using System.ComponentModel.Composition;
 using System.Drawing;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using ChromecastYoutubeCaster;
 using Karpach.Remote.Commands.Base;
 using Karpach.Remote.Commands.Interfaces;
 using NLog;
@@ -44,24 +45,42 @@ namespace Karpach.Remote.Chromecast.Command
             if (parameters != null && parameters.Length == 1)
             {
                 string parameter = parameters[0].ToString();
-                PlayYoutubeVideo(parameter).Wait();
+                PlayYoutubeVideoAsync(parameter).Wait();
             }
             else
             {
-                PlayYoutubeVideo("KpllAjxOIUU").Wait();
+                PlayYoutubeVideoAsync("KpllAjxOIUU").Wait();
             }            
         }
 
-        private async Task PlayYoutubeVideo(string videoId)
+        private Task PlayYoutubeVideoAsync(string videoId)
         {
-            ObservableCollection<SharpCaster.Models.Chromecast> chromecasts = await ChromecastService.Current.StartLocatingDevices();
-            var chromecast = chromecasts.First();
-            var chromecastYouTubeCaster = new ChromecastYouTubeCaster(chromecast.DeviceUri.Host);
-            var response = await chromecastYouTubeCaster.PlayVideo(videoId);
-            if (response.StatusCode != HttpStatusCode.OK)
+            return Task.Run(async () =>
             {
-                Logger.Log(LogLevel.Error, response.Content);
-            }
+                string ip = ((ChromecastCommandSettings) Settings).ChromeCastIP;
+                if (string.IsNullOrEmpty(ip))
+                {
+                    ObservableCollection<SharpCaster.Models.Chromecast> chromecasts = await ChromecastService.Current
+                        .StartLocatingDevices()
+                        .ConfigureAwait(false);
+                    if (!chromecasts.Any())
+                    {
+                        Logger.Log(LogLevel.Error, "No ChromeCasts found, try to specify ip of chromecast manually.");
+                        return;
+                    }
+                    var chromecast = chromecasts.First();                                        
+                    ip = chromecast.DeviceUri.Host;
+                }                
+                string url = $"http://{ip}:8008/apps/YouTube";
+                HttpClient client = new HttpClient();
+                StringContent httpContent = new StringContent($"v={videoId}", Encoding.UTF8, "application/json");
+                HttpResponseMessage httpResponseMessage = await client.PostAsync(url, httpContent).ConfigureAwait(false);
+                HttpResponseMessage response = httpResponseMessage;
+                if (response.StatusCode != HttpStatusCode.Created)
+                {
+                    Logger.Log(LogLevel.Error, response.Content);
+                }
+            });
         }
 
         public override void ShowSettings()

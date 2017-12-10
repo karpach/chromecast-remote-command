@@ -13,6 +13,8 @@ namespace Karpach.Remote.Chromecast.Command
         private Label _lbCommandName;
         private TextBox _txtCommandName;
         private Label _lbDelay;
+        private Label lbIP;
+        private TextBox _txtChromeCastIP;
         private TextBox _txtDelay;
 
         public ChromecastCommandSettingsForm(ChromecastCommandSettings settings)
@@ -21,6 +23,7 @@ namespace Karpach.Remote.Chromecast.Command
             Settings = settings;
             _txtCommandName.Text = Settings.CommandName;
             _txtDelay.Text = Settings.ExecutionDelay?.ToString() ?? "0";
+            _txtChromeCastIP.Text = Settings.ChromeCastIP;
         }                
 
         private void InitializeComponent()
@@ -32,12 +35,14 @@ namespace Karpach.Remote.Chromecast.Command
             this._txtCommandName = new System.Windows.Forms.TextBox();
             this._lbDelay = new System.Windows.Forms.Label();
             this._txtDelay = new System.Windows.Forms.TextBox();
+            this.lbIP = new System.Windows.Forms.Label();
+            this._txtChromeCastIP = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // _btnOk
             // 
             this._btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._btnOk.Location = new System.Drawing.Point(130, 100);
+            this._btnOk.Location = new System.Drawing.Point(130, 127);
             this._btnOk.Name = "_btnOk";
             this._btnOk.Size = new System.Drawing.Size(75, 23);
             this._btnOk.TabIndex = 2;
@@ -48,7 +53,7 @@ namespace Karpach.Remote.Chromecast.Command
             // _btnCancel
             // 
             this._btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this._btnCancel.Location = new System.Drawing.Point(211, 100);
+            this._btnCancel.Location = new System.Drawing.Point(211, 127);
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.Size = new System.Drawing.Size(75, 23);
             this._btnCancel.TabIndex = 3;
@@ -59,7 +64,7 @@ namespace Karpach.Remote.Chromecast.Command
             // _lbCommandName
             // 
             this._lbCommandName.AutoSize = true;
-            this._lbCommandName.Location = new System.Drawing.Point(22, 25);
+            this._lbCommandName.Location = new System.Drawing.Point(36, 25);
             this._lbCommandName.Name = "_lbCommandName";
             this._lbCommandName.Size = new System.Drawing.Size(88, 13);
             this._lbCommandName.TabIndex = 0;
@@ -67,15 +72,15 @@ namespace Karpach.Remote.Chromecast.Command
             // 
             // _txtCommandName
             // 
-            this._txtCommandName.Location = new System.Drawing.Point(116, 22);
+            this._txtCommandName.Location = new System.Drawing.Point(130, 22);
             this._txtCommandName.Name = "_txtCommandName";
-            this._txtCommandName.Size = new System.Drawing.Size(269, 20);
+            this._txtCommandName.Size = new System.Drawing.Size(255, 20);
             this._txtCommandName.TabIndex = 0;
             // 
             // _lbDelay
             // 
             this._lbDelay.AutoSize = true;
-            this._lbDelay.Location = new System.Drawing.Point(9, 60);
+            this._lbDelay.Location = new System.Drawing.Point(23, 60);
             this._lbDelay.Name = "_lbDelay";
             this._lbDelay.Size = new System.Drawing.Size(101, 13);
             this._lbDelay.TabIndex = 0;
@@ -83,17 +88,35 @@ namespace Karpach.Remote.Chromecast.Command
             // 
             // _txtDelay
             // 
-            this._txtDelay.Location = new System.Drawing.Point(116, 57);
+            this._txtDelay.Location = new System.Drawing.Point(130, 57);
             this._txtDelay.Name = "_txtDelay";
-            this._txtDelay.Size = new System.Drawing.Size(271, 20);
+            this._txtDelay.Size = new System.Drawing.Size(257, 20);
             this._txtDelay.TabIndex = 1;
+            // 
+            // lbIP
+            // 
+            this.lbIP.AutoSize = true;
+            this.lbIP.Location = new System.Drawing.Point(9, 94);
+            this.lbIP.Name = "lbIP";
+            this.lbIP.Size = new System.Drawing.Size(122, 13);
+            this.lbIP.TabIndex = 0;
+            this.lbIP.Text = "Optional ChromeCast IP:";
+            // 
+            // txtChromeCastIP
+            // 
+            this._txtChromeCastIP.Location = new System.Drawing.Point(130, 91);
+            this._txtChromeCastIP.Name = "_txtChromeCastIP";
+            this._txtChromeCastIP.Size = new System.Drawing.Size(257, 20);
+            this._txtChromeCastIP.TabIndex = 1;
             // 
             // ChromecastCommandSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 140);
+            this.ClientSize = new System.Drawing.Size(397, 168);
+            this.Controls.Add(this._txtChromeCastIP);
             this.Controls.Add(this._txtDelay);
+            this.Controls.Add(this.lbIP);
             this.Controls.Add(this._txtCommandName);
             this.Controls.Add(this._lbDelay);
             this.Controls.Add(this._lbCommandName);
@@ -114,6 +137,7 @@ namespace Karpach.Remote.Chromecast.Command
             Settings.CommandName = _txtCommandName.Text;
             int n;
             Settings.ExecutionDelay = int.TryParse(_txtDelay.Text, out n) ? n : 0;
+            Settings.ChromeCastIP = _txtChromeCastIP.Text;
             Close();
         }
 
