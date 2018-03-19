@@ -8,9 +8,10 @@
     <OutputType>Exe</OutputType>
     <RootNamespace>Karpach.Remote.Chromecast.Command.Runner</RootNamespace>
     <AssemblyName>Karpach.Remote.Chromecast.Command.Runner</AssemblyName>
-    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -35,11 +36,11 @@
     <Reference Include="Google.Protobuf, Version=3.3.0.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
       <HintPath>..\packages\Google.Protobuf.3.3.0\lib\net45\Google.Protobuf.dll</HintPath>
     </Reference>
-    <Reference Include="Karpach.Remote.Commands.Base, Version=1.0.6.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Karpach.Remote.Commands.Base.1.0.6\lib\net46\Karpach.Remote.Commands.Base.dll</HintPath>
+    <Reference Include="Karpach.Remote.Commands.Base, Version=1.0.9.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Karpach.Remote.Commands.Base.1.0.10\lib\net461\Karpach.Remote.Commands.Base.dll</HintPath>
     </Reference>
-    <Reference Include="Karpach.Remote.Commands.Interfaces, Version=1.0.4.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Karpach.Remote.Commands.Interfaces.1.0.4\lib\net46\Karpach.Remote.Commands.Interfaces.dll</HintPath>
+    <Reference Include="Karpach.Remote.Commands.Interfaces, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Karpach.Remote.Commands.Interfaces.1.0.5\lib\net461\Karpach.Remote.Commands.Interfaces.dll</HintPath>
     </Reference>
     <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
@@ -72,8 +73,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
-    <None Include="packages.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Karpach.Remote.Chromecast.Command\Karpach.Remote.Chromecast.Command.csproj">
