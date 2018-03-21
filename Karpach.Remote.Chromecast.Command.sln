@@ -1,11 +1,16 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26430.13
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Karpach.Remote.Chromecast.Command.Runner", "Karpach.Remote.Chromecast.Command.Runner\Karpach.Remote.Chromecast.Command.Runner.csproj", "{97EAFD68-3A44-4679-BD37-8534865AEAB1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Karpach.Remote.Chromecast.Command", "Karpach.Remote.Chromecast.Command\Karpach.Remote.Chromecast.Command.csproj", "{38281835-D2B1-4B4F-AF02-0D46DACBAF24}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{2CA9C1F0-3878-48C7-AA7C-4479EC092B5F}"
+	ProjectSection(SolutionItems) = preProject
+		readme.md = readme.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,5 +29,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1B1F57F0-770B-43EF-A0DC-16A79B1A0CCC}
 	EndGlobalSection
 EndGlobal
