@@ -14,7 +14,7 @@ ChromeCast - chrome cast name in current network.
 
 You also need to supply the following command parameters:
 
-1. VideoId - youtube video id
+1. VideoId - YouTube video id (e.g for https://www.youtube.com/watch?v=2MpUj-Aua48, videoId = 2MpUj-Aua48)
 2. URL for video or audio as well as Content Type (e.g audio/mp3, video/mp4)
 
 [![Build status](https://ci.appveyor.com/api/projects/status/oa2cvbspmma32o1w?svg=true)](https://ci.appveyor.com/project/karpach/chromecast-remote-command)
