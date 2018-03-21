@@ -113,6 +113,7 @@ namespace Karpach.Remote.Chromecast.Command
             // cbxChromeCast
             // 
             this._cbxChromeCast.FormattingEnabled = true;
+            this._cbxChromeCast.DropDownStyle = ComboBoxStyle.DropDownList;
             this._cbxChromeCast.Location = new System.Drawing.Point(130, 89);
             this._cbxChromeCast.Name = "_cbxChromeCast";
             this._cbxChromeCast.Size = new System.Drawing.Size(255, 21);
