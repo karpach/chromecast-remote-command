@@ -1,5 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows.Forms;
+using GoogleCast;
 using SampleCommand;
 
 namespace Karpach.Remote.Chromecast.Command
@@ -14,7 +19,7 @@ namespace Karpach.Remote.Chromecast.Command
         private TextBox _txtCommandName;
         private Label _lbDelay;
         private Label lbIP;
-        private TextBox _txtChromeCastIP;
+        private ComboBox _cbxChromeCast;
         private TextBox _txtDelay;
 
         public ChromecastCommandSettingsForm(ChromecastCommandSettings settings)
@@ -23,7 +28,10 @@ namespace Karpach.Remote.Chromecast.Command
             Settings = settings;
             _txtCommandName.Text = Settings.CommandName;
             _txtDelay.Text = Settings.ExecutionDelay?.ToString() ?? "0";
-            _txtChromeCastIP.Text = Settings.ChromeCastIP;
+            Task.Factory.StartNew(async () => { 
+                string[] receivers = (await new DeviceLocator().FindReceiversAsync()).Select(r => r.FriendlyName).ToArray();
+                _cbxChromeCast.DataSource = receivers;
+            },CancellationToken.None, TaskCreationOptions.None, TaskScheduler.FromCurrentSynchronizationContext());        
         }                
 
         private void InitializeComponent()
@@ -36,7 +44,7 @@ namespace Karpach.Remote.Chromecast.Command
             this._lbDelay = new System.Windows.Forms.Label();
             this._txtDelay = new System.Windows.Forms.TextBox();
             this.lbIP = new System.Windows.Forms.Label();
-            this._txtChromeCastIP = new System.Windows.Forms.TextBox();
+            this._cbxChromeCast = new System.Windows.Forms.ComboBox();
             this.SuspendLayout();
             // 
             // _btnOk
@@ -96,25 +104,26 @@ namespace Karpach.Remote.Chromecast.Command
             // lbIP
             // 
             this.lbIP.AutoSize = true;
-            this.lbIP.Location = new System.Drawing.Point(9, 94);
+            this.lbIP.Location = new System.Drawing.Point(57, 94);
             this.lbIP.Name = "lbIP";
-            this.lbIP.Size = new System.Drawing.Size(122, 13);
+            this.lbIP.Size = new System.Drawing.Size(67, 13);
             this.lbIP.TabIndex = 0;
-            this.lbIP.Text = "Optional ChromeCast IP:";
+            this.lbIP.Text = "ChromeCast:";
             // 
-            // txtChromeCastIP
+            // cbxChromeCast
             // 
-            this._txtChromeCastIP.Location = new System.Drawing.Point(130, 91);
-            this._txtChromeCastIP.Name = "_txtChromeCastIP";
-            this._txtChromeCastIP.Size = new System.Drawing.Size(257, 20);
-            this._txtChromeCastIP.TabIndex = 1;
+            this._cbxChromeCast.FormattingEnabled = true;
+            this._cbxChromeCast.Location = new System.Drawing.Point(130, 89);
+            this._cbxChromeCast.Name = "_cbxChromeCast";
+            this._cbxChromeCast.Size = new System.Drawing.Size(255, 21);
+            this._cbxChromeCast.TabIndex = 4;
             // 
             // ChromecastCommandSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(397, 168);
-            this.Controls.Add(this._txtChromeCastIP);
+            this.Controls.Add(this._cbxChromeCast);
             this.Controls.Add(this._txtDelay);
             this.Controls.Add(this.lbIP);
             this.Controls.Add(this._txtCommandName);
@@ -126,7 +135,7 @@ namespace Karpach.Remote.Chromecast.Command
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ChromecastCommandSettingsForm";
-            this.Text = "ChromeCast Command Settings";
+            this.Text = "ChromeCast Command Settings";            
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -135,15 +144,14 @@ namespace Karpach.Remote.Chromecast.Command
         private void _btnOk_Click(object sender, EventArgs e)
         {
             Settings.CommandName = _txtCommandName.Text;
-            int n;
-            Settings.ExecutionDelay = int.TryParse(_txtDelay.Text, out n) ? n : 0;
-            Settings.ChromeCastIP = _txtChromeCastIP.Text;
+            Settings.ExecutionDelay = int.TryParse(_txtDelay.Text, out var n) ? n : 0;
+            Settings.ChromeCastName = _cbxChromeCast.Text;
             Close();
         }
 
         private void _btnCancel_Click(object sender, EventArgs e)
         {
             Close();
-        }
+        }        
     }
 }

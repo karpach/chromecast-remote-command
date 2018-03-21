@@ -17,8 +17,9 @@ ExecutionDelay = 1000
 Id = 41d5f7ea-6e02-4c91-8c25-5100e1240952             
             ");
             var command = new ChromecastCommand();
-            //command.ShowSettings();
-            command.RunCommand("hDz2F5EDZZI");         
+            command.ShowSettings();
+            //command.RunCommand("hDz2F5EDZZI");         
+            command.RunCommand("http://ic2.101.ru:8000/v3_1", "audio/mp3");         
             Console.ReadKey();
             command.Dispose();
         }       
