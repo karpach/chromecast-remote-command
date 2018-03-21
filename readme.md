@@ -1,6 +1,6 @@
 # ChromeCast Command for Remote Controller
 This is a plugin for https://github.com/karpach/remote-controller.
-The command gives an ability to cast youtube videos, video files over HTTP and audio files over HTTP.
+The command gives an ability to cast YouTube videos, video files over HTTP and audio files over HTTP.
 
 ![Settings](Screenshots/Settings-1.png)
 
