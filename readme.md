@@ -12,6 +12,8 @@ Execution delay - a delay before command starts its execution.
 
 ChromeCast - chrome cast name in current network.
 
+Volume - optional volume override
+
 You also need to supply the following command parameters:
 
 1. VideoId - YouTube video id (e.g for https://www.youtube.com/watch?v=2MpUj-Aua48, videoId = 2MpUj-Aua48)
