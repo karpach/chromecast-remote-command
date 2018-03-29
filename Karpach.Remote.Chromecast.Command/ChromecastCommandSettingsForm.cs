@@ -20,6 +20,8 @@ namespace Karpach.Remote.Chromecast.Command
         private Label _lbDelay;
         private Label lbIP;
         private ComboBox _cbxChromeCast;
+        private TrackBar _tbVolume;
+        private CheckBox _chkVolume;
         private TextBox _txtDelay;
 
         public ChromecastCommandSettingsForm(ChromecastCommandSettings settings)
@@ -45,15 +47,18 @@ namespace Karpach.Remote.Chromecast.Command
             this._txtDelay = new System.Windows.Forms.TextBox();
             this.lbIP = new System.Windows.Forms.Label();
             this._cbxChromeCast = new System.Windows.Forms.ComboBox();
+            this._tbVolume = new System.Windows.Forms.TrackBar();
+            this._chkVolume = new System.Windows.Forms.CheckBox();
+            ((System.ComponentModel.ISupportInitialize)(this._tbVolume)).BeginInit();
             this.SuspendLayout();
             // 
             // _btnOk
             // 
             this._btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._btnOk.Location = new System.Drawing.Point(130, 127);
+            this._btnOk.Location = new System.Drawing.Point(130, 169);
             this._btnOk.Name = "_btnOk";
             this._btnOk.Size = new System.Drawing.Size(75, 23);
-            this._btnOk.TabIndex = 2;
+            this._btnOk.TabIndex = 5;
             this._btnOk.Text = "Ok";
             this._btnOk.UseVisualStyleBackColor = true;
             this._btnOk.Click += new System.EventHandler(this._btnOk_Click);
@@ -61,10 +66,10 @@ namespace Karpach.Remote.Chromecast.Command
             // _btnCancel
             // 
             this._btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this._btnCancel.Location = new System.Drawing.Point(211, 127);
+            this._btnCancel.Location = new System.Drawing.Point(211, 169);
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.Size = new System.Drawing.Size(75, 23);
-            this._btnCancel.TabIndex = 3;
+            this._btnCancel.TabIndex = 6;
             this._btnCancel.Text = "Cancel";
             this._btnCancel.UseVisualStyleBackColor = true;
             this._btnCancel.Click += new System.EventHandler(this._btnCancel_Click);
@@ -110,20 +115,43 @@ namespace Karpach.Remote.Chromecast.Command
             this.lbIP.TabIndex = 0;
             this.lbIP.Text = "ChromeCast:";
             // 
-            // cbxChromeCast
+            // _cbxChromeCast
             // 
+            this._cbxChromeCast.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._cbxChromeCast.FormattingEnabled = true;
-            this._cbxChromeCast.DropDownStyle = ComboBoxStyle.DropDownList;
             this._cbxChromeCast.Location = new System.Drawing.Point(130, 89);
             this._cbxChromeCast.Name = "_cbxChromeCast";
             this._cbxChromeCast.Size = new System.Drawing.Size(255, 21);
-            this._cbxChromeCast.TabIndex = 4;
+            this._cbxChromeCast.TabIndex = 2;
+            // 
+            // _tbVolume
+            // 
+            this._tbVolume.Enabled = false;
+            this._tbVolume.Location = new System.Drawing.Point(161, 122);
+            this._tbVolume.Name = "_tbVolume";
+            this._tbVolume.Size = new System.Drawing.Size(224, 45);
+            this._tbVolume.TabIndex = 4;
+            // 
+            // _chkVolume
+            // 
+            this._chkVolume.AutoSize = true;
+            this._chkVolume.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this._chkVolume.Location = new System.Drawing.Point(75, 124);
+            this._chkVolume.Name = "_chkVolume";
+            this._chkVolume.Size = new System.Drawing.Size(70, 17);
+            this._chkVolume.TabIndex = 3;
+            this._chkVolume.Text = "Volume:  ";
+            this._chkVolume.ThreeState = true;
+            this._chkVolume.UseVisualStyleBackColor = true;
+            this._chkVolume.CheckedChanged += new System.EventHandler(this._chkVolume_CheckedChanged);
             // 
             // ChromecastCommandSettingsForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 168);
+            this.ClientSize = new System.Drawing.Size(397, 207);
+            this.Controls.Add(this._chkVolume);
+            this.Controls.Add(this._tbVolume);
             this.Controls.Add(this._cbxChromeCast);
             this.Controls.Add(this._txtDelay);
             this.Controls.Add(this.lbIP);
@@ -136,7 +164,8 @@ namespace Karpach.Remote.Chromecast.Command
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
             this.Name = "ChromecastCommandSettingsForm";
-            this.Text = "ChromeCast Command Settings";            
+            this.Text = "ChromeCast Command Settings";
+            ((System.ComponentModel.ISupportInitialize)(this._tbVolume)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -147,12 +176,25 @@ namespace Karpach.Remote.Chromecast.Command
             Settings.CommandName = _txtCommandName.Text;
             Settings.ExecutionDelay = int.TryParse(_txtDelay.Text, out var n) ? n : 0;
             Settings.ChromeCastName = _cbxChromeCast.Text;
+            if (_chkVolume.Checked)
+            {
+                Settings.Volume = (float)_tbVolume.Value / 10;
+            }
+            else
+            {
+                Settings.Volume = null;
+            }
             Close();
         }
 
         private void _btnCancel_Click(object sender, EventArgs e)
         {
             Close();
-        }        
+        }
+
+        private void _chkVolume_CheckedChanged(object sender, EventArgs e)
+        {
+            _tbVolume.Enabled = _chkVolume.Checked;
+        }
     }
 }

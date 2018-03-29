@@ -33,6 +33,8 @@ namespace Karpach.Remote.Chromecast.Command
         protected override Type SettingsType => typeof(ChromecastCommandSettings);
         public override string CommandTitle => ConfiguredValue ? ((ChromecastCommandSettings)Settings).CommandName : $"Chromecast Command - {NotConfigured}";
         public override Image TrayIcon => Resources.Icon.ToBitmap();
+        private Lazy<Task<Sender>> _sender = null;
+
         public override void RunCommand(params object[] parameters)
         {
             if (!Configured)
@@ -78,18 +80,20 @@ namespace Karpach.Remote.Chromecast.Command
                     chromeCast = receivers.First();
                 }
 
+                Lazy<Task<Sender>> sender = GetSender(chromeCast);
+
                 if (Regex.IsMatch(videoId, "^https?://"))
-                {
-                    await PlayVideoAsync(chromeCast, videoId, contentType).ConfigureAwait(false);
+                {                    
+                    await PlayVideoAsync(sender, videoId, contentType, settings.Volume).ConfigureAwait(false);
                 }
                 else
                 {
-                    await PlayYoutubeAsync(chromeCast.IPEndPoint.Address.ToString(), videoId).ConfigureAwait(false);
+                    await PlayYoutubeAsync(sender, chromeCast.IPEndPoint.Address.ToString(), videoId, settings.Volume).ConfigureAwait(false);
                 }                
             });
         }
 
-        private async Task PlayYoutubeAsync(string ip, string videoId)
+        private async Task PlayYoutubeAsync(Lazy<Task<Sender>> sender, string ip, string videoId, float? volume)
         {
             string url = $"http://{ip}:8008/apps/YouTube";
             HttpClient client = new HttpClient();
@@ -100,22 +104,44 @@ namespace Karpach.Remote.Chromecast.Command
             {
                 Logger.Log(LogLevel.Error, response.Content);
             }
+            SetVolume(sender, volume);
         }
 
-        private async Task PlayVideoAsync(IReceiver chromeCast, string url, string contentType)
-        {
-            var sender = new Sender();
-            // Connect to the ChromeCast
-            await sender.ConnectAsync(chromeCast).ConfigureAwait(false);
+        private async Task PlayVideoAsync(Lazy<Task<Sender>> sender, string url, string contentType, float? volume)
+        {            
             // Launch the default media receiver application
-            var mediaChannel = sender.GetChannel<IMediaChannel>();
-            await sender.LaunchAsync(mediaChannel).ConfigureAwait(false);
+            Sender actualSender = await sender.Value.ConfigureAwait(false);
+            var mediaChannel = actualSender.GetChannel<IMediaChannel>();
+            await actualSender.LaunchAsync(mediaChannel).ConfigureAwait(false);                       
+
             // Load and play video or audio over http          
             await mediaChannel.LoadAsync(new Media
             {
                 ContentId = url,
                 ContentType = contentType
             }).ConfigureAwait(false);
+            SetVolume(sender, volume);
+        }
+
+        private Lazy<Task<Sender>> GetSender(IReceiver chromeCast)
+        {
+            return _sender ?? (_sender = new Lazy<Task<Sender>>(async () =>
+            {
+                var s = new Sender();
+                await s.ConnectAsync(chromeCast).ConfigureAwait(false);
+                return s;
+            }));
+        }
+
+        private void SetVolume(Lazy<Task<Sender>> sender, float? volume)
+        {
+            if (!volume.HasValue)
+            {
+                return;
+            }
+            Sender actualSender = sender.Value.ConfigureAwait(false).GetAwaiter().GetResult();
+            var receiverChannel = actualSender.GetChannel<IReceiverChannel>();
+            receiverChannel.SetVolumeAsync(volume.Value);
         }
 
         public override void ShowSettings()
