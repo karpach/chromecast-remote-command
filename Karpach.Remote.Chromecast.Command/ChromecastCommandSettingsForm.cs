@@ -55,7 +55,7 @@ namespace Karpach.Remote.Chromecast.Command
             // _btnOk
             // 
             this._btnOk.DialogResult = System.Windows.Forms.DialogResult.OK;
-            this._btnOk.Location = new System.Drawing.Point(130, 169);
+            this._btnOk.Location = new System.Drawing.Point(130, 162);
             this._btnOk.Name = "_btnOk";
             this._btnOk.Size = new System.Drawing.Size(75, 23);
             this._btnOk.TabIndex = 5;
@@ -66,7 +66,7 @@ namespace Karpach.Remote.Chromecast.Command
             // _btnCancel
             // 
             this._btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this._btnCancel.Location = new System.Drawing.Point(211, 169);
+            this._btnCancel.Location = new System.Drawing.Point(211, 162);
             this._btnCancel.Name = "_btnCancel";
             this._btnCancel.Size = new System.Drawing.Size(75, 23);
             this._btnCancel.TabIndex = 6;
@@ -127,20 +127,20 @@ namespace Karpach.Remote.Chromecast.Command
             // _tbVolume
             // 
             this._tbVolume.Enabled = false;
-            this._tbVolume.Location = new System.Drawing.Point(161, 122);
+            this._tbVolume.Location = new System.Drawing.Point(151, 118);
             this._tbVolume.Name = "_tbVolume";
-            this._tbVolume.Size = new System.Drawing.Size(224, 45);
+            this._tbVolume.Size = new System.Drawing.Size(234, 45);
             this._tbVolume.TabIndex = 4;
             // 
             // _chkVolume
             // 
             this._chkVolume.AutoSize = true;
             this._chkVolume.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this._chkVolume.Location = new System.Drawing.Point(75, 124);
+            this._chkVolume.Location = new System.Drawing.Point(81, 122);
             this._chkVolume.Name = "_chkVolume";
-            this._chkVolume.Size = new System.Drawing.Size(70, 17);
+            this._chkVolume.Size = new System.Drawing.Size(64, 17);
             this._chkVolume.TabIndex = 3;
-            this._chkVolume.Text = "Volume:  ";
+            this._chkVolume.Text = "Volume:";
             this._chkVolume.ThreeState = true;
             this._chkVolume.UseVisualStyleBackColor = true;
             this._chkVolume.CheckedChanged += new System.EventHandler(this._chkVolume_CheckedChanged);
@@ -149,7 +149,7 @@ namespace Karpach.Remote.Chromecast.Command
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(397, 207);
+            this.ClientSize = new System.Drawing.Size(397, 199);
             this.Controls.Add(this._chkVolume);
             this.Controls.Add(this._tbVolume);
             this.Controls.Add(this._cbxChromeCast);
