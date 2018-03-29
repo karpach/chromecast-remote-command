@@ -30,6 +30,12 @@ namespace Karpach.Remote.Chromecast.Command
             Settings = settings;
             _txtCommandName.Text = Settings.CommandName;
             _txtDelay.Text = Settings.ExecutionDelay?.ToString() ?? "0";
+            _tbVolume.Enabled = Settings.Volume.HasValue;
+            if (settings.Volume.HasValue)
+            {
+                _tbVolume.Value = (int)(settings.Volume.Value * 10);
+            }
+            _chkVolume.Checked = Settings.Volume.HasValue;            
             Task.Factory.StartNew(async () => { 
                 string[] receivers = (await new DeviceLocator().FindReceiversAsync()).Select(r => r.FriendlyName).ToArray();
                 _cbxChromeCast.DataSource = receivers;
@@ -125,8 +131,7 @@ namespace Karpach.Remote.Chromecast.Command
             this._cbxChromeCast.TabIndex = 2;
             // 
             // _tbVolume
-            // 
-            this._tbVolume.Enabled = false;
+            //             
             this._tbVolume.Location = new System.Drawing.Point(151, 118);
             this._tbVolume.Name = "_tbVolume";
             this._tbVolume.Size = new System.Drawing.Size(234, 45);
