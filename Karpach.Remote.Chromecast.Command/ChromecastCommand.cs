@@ -104,7 +104,7 @@ namespace Karpach.Remote.Chromecast.Command
             {
                 Logger.Log(LogLevel.Error, response.Content);
             }
-            SetVolume(sender, volume);
+            await SetVolumeAsync(sender, volume).ConfigureAwait(false);
         }
 
         private async Task PlayVideoAsync(Lazy<Task<Sender>> sender, string url, string contentType, float? volume)
@@ -120,7 +120,7 @@ namespace Karpach.Remote.Chromecast.Command
                 ContentId = url,
                 ContentType = contentType
             }).ConfigureAwait(false);
-            SetVolume(sender, volume);
+            await SetVolumeAsync(sender, volume).ConfigureAwait(false);
         }
 
         private Lazy<Task<Sender>> GetSender(IReceiver chromeCast)
@@ -133,15 +133,17 @@ namespace Karpach.Remote.Chromecast.Command
             }));
         }
 
-        private void SetVolume(Lazy<Task<Sender>> sender, float? volume)
+        private async Task SetVolumeAsync(Lazy<Task<Sender>> sender, float? volume)
         {
             if (!volume.HasValue)
             {
                 return;
             }
-            Sender actualSender = sender.Value.ConfigureAwait(false).GetAwaiter().GetResult();
+            Sender actualSender = await sender.Value.ConfigureAwait(false);
             var receiverChannel = actualSender.GetChannel<IReceiverChannel>();
-            receiverChannel.SetVolumeAsync(volume.Value);
+            await receiverChannel.SetVolumeAsync(volume.Value).ConfigureAwait(false);
+            await actualSender.DisconnectAsync().ConfigureAwait(false);
+            _sender = null;
         }
 
         public override void ShowSettings()
